@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Use correct character set. -->
+  <meta charset="utf-8">
+  <!-- Tell IE to use the latest, best version. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>Planets!</title>
+  <script src="../Build/Cesium/Cesium.js"></script>
+  <style>
+      @import url(../Build/Cesium/Widgets/widgets.css);
+      html, body, #cesiumContainer {
+          width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+      }
+  </style>
+</head>
+<body>
+  <div id="cesiumContainer"></div>
+  <script>
+var viewer = new Cesium.Viewer('cesiumContainer');
+viewer.scene.camera.frustum.far = 1e12; //Move the far wall of the viewing frustum.
+var scene = viewer.scene;
+scene.skyBox.show = true;
+scene.sun.show = false;
+scene.globe.enableLighting = true;
+
+var moonDistance = 384e6;var i;var center;
+var sunN=0;var merN=1;var venN=2;var earN=3;var marN=4;
+var jupN=5;var satN=6;var uraN=7;var nepN=8;
+
+var radius = [
+    6.955e8 /*Sun*/
+    ,2440000 /*Mercury*/
+    ,6052000 /*Venus*/
+    ,6371000 /*Earth*/
+    ,3390000 /*Mars*/
+    ,69911000 /*Jupiter*/
+    ,58232000 /*Saturn*/
+    ,25362000 /*Uranus*/
+    ,24622000 /*Neptune*/
+    ]
+var color = [
+    Cesium.Color.fromCssColorString('#FFFF00') /*Sun*/
+    ,Cesium.Color.fromCssColorString('#444444') /*Mercury*/
+    ,Cesium.Color.fromCssColorString('#EEEEEE') /*Venus*/
+    ,Cesium.Color.fromCssColorString('#0000FF') /*Earth*/
+    ,Cesium.Color.fromCssColorString('#FF8800') /*Mars*/
+    ,Cesium.Color.fromCssColorString('#CC3333') /*Jupiter*/
+    ,Cesium.Color.fromCssColorString('#D1B546') /*Saturn*/
+    ,Cesium.Color.fromCssColorString('#6DB7A6') /*Uranus*/
+    ,Cesium.Color.fromCssColorString('#71BEE5') /*Neptune*/
+    ]
+var angle = [
+    0 /*Sun*/
+    ,0 /*Mercury*/
+    ,15 /*Venus*/
+    ,0 /*Earth*/
+    ,30 /*Mars*/
+    ,45 /*Jupiter*/
+    ,60 /*Saturn*/
+    ,75 /*Uranus*/
+    ,90 /*Neptune*/
+    ]
+var mat=[];var pri=[];
+i=0;while(i<9)
+{
+    if(i==earN){i+=1;continue;}
+    mat[i]=Cesium.Material.fromType(Cesium.Material.RimLightingType);
+    mat[i].uniforms.color=color[i];
+    if(i == sunN){center=Cesium.Cartesian3();}else
+    {center=new Cesium.Cartesian3(moonDistance*Math.cos(angle[i]),moonDistance*Math.sin(angle[i]),0);}
+    pri[i]=scene.primitives.add(new Cesium.EllipsoidPrimitive(
+    {
+        center:center
+        ,radii:new Cesium.Cartesian3(radius[i], radius[i], radius[i])
+        ,material:mat[i]
+    }
+    ));
+    i+=1;
+}
+
+//The rest is unmodified from Ed Mackey's Sun program (except the {x:1000000000,y:0,z:0} )
+
+// Allocate "new" variables outside of the render loop when possible, to reduce garbage collection.
+var sunPosition = new Cesium.Cartesian3();
+var icrfToFixedScratch = new Cesium.Matrix3();
+var sunModelMatrixScratch = new Cesium.Matrix4();
+
+// Update the camera and the Sun with each animation frame.
+function icrf(scene, time) {
+    if (scene.mode !== Cesium.SceneMode.SCENE3D) {
+        return;
+    }
+
+    var icrfToFixed = Cesium.Transforms.computeIcrfToFixedMatrix(time, icrfToFixedScratch);
+    if (Cesium.defined(icrfToFixed)) {
+        // Update the camera with the new ICRF rotation
+        var offset = Cesium.Cartesian3.clone(scene.camera.position);
+scene.camera.lookAtTransform(Cesium.Matrix4.fromRotationTranslation(icrfToFixed),offset);
+
+        // Compute Sun position in Inertial.
+        Cesium.Simon1994PlanetaryPositions.computeSunPositionInEarthInertialFrame(time, sunPosition);
+
+        // Transform Sun position from Inertial to Fixed.
+        Cesium.Matrix3.multiplyByVector(icrfToFixed, {x:1000000000,y:0,z:0}, sunPosition);
+
+        // Update the Sun's modelMatrix to move it from the origin to its new position for this animation frame.
+        pri[sunN].modelMatrix = Cesium.Matrix4.fromRotationTranslation(Cesium.Matrix3.IDENTITY, sunPosition, sunModelMatrixScratch);
+    }
+}
+scene.preRender.addEventListener(icrf);
+
+</script>
+</body>
+</html>
