@@ -18,9 +18,18 @@
 </head>
 <body>
 
-  <!-- <form action="http://localhost:8080/Apps/Planets.html">
+  <form action="https://alaska113.github.io/cesium.gina/Cesium/Apps/Planets.html">
     <input type="submit" value="Unrealistic Planets">
-</form> -->
+</form>
+<form action="https://alaska113.github.io/cesium.gina/Cesium/Apps/alaska.html">
+  <input type="submit" value="Alaska">
+</form>  <form action="https://alaska113.github.io/cesium.gina/Cesium/Apps/fairbanks.html">
+    <input type="submit" value="Fairbanks">
+</form>  <form action="https://alaska113.github.io/cesium.gina/Cesium/Apps/gi.html">
+    <input type="submit" value="Geophysical Institute">
+</form>  <form action="https://alaska113.github.io/cesium.gina/Cesium/Apps/lakes.html">
+    <input type="submit" value="Lakes">
+</form>
   <div id="cesiumContainer"></div>
 
 
@@ -33,7 +42,6 @@
       baseLayerPicker : false,
          crossDomain: true,
      vrButton : true,
-     fullscreenButton : true
   });
 
 //   var dataSource1 = new Cesium.GeoJsonDataSource();
@@ -51,14 +59,11 @@
  //    })
  //  });
 
-var lakes = viewer.dataSources.add(Cesium.GeoJsonDataSource.load('https://alaska113.github.io/mars.txt'));
-viewer.camera.setView({
-       destination : Cesium.Cartesian3.fromDegrees(212.1505, 64.8595, 150.0),
-       heading : 90.0,
-   pitch : 175.0,
-   roll : 25.0
+var lakes = viewer.dataSources.add(Cesium.GeoJsonDataSource.load('https://alaska113.github.io/lakes.txt'));
+viewer.camera.flyTo({
+       destination : Cesium.Cartesian3.fromDegrees(29.0, 109.77, 75000.0),
 });
-var mars = new Cesium.Ellipsoid.MOON
+
 
   </script>
 
