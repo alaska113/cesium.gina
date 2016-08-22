@@ -14,6 +14,9 @@ If you're using a VR device such as the Oculus Rift or Google Cardboard, click t
 
 The bottom left hand corner features time control settings. You should be able to see the earth rotate if you zoom out enough. 
 
+This demo was made with Cesium JavaScript functions and some basic HTML. The Cesium function documentation can be found here: https://cesiumjs.org/Cesium/Build/Documentation/index.html
+
+
 CREDITS:
 This demo uses multiple sources of geographic tiles and information provided by GINA.
 
@@ -23,7 +26,6 @@ The 1955 Northern Test Case Aireal Imagery tiles can be found here: http://tiles
 
 Outlines of the Northern Test Case Lakes provided by Roberta Walker can be found in a GeoJson format here: https://alaska113.github.io/lakes.txt
 
-Demo created by GINA intern, Khan Howe.
 
 FUTURE WORK:
 -If someone were to create a union between this demo and the Unity demo, it would be a very powerful tool. My original plan after experimenting with both was to have an area selection and display tool made with Cesium that then creates a 3D surface terrain map on unity. I unfotunatly could not make it to this step.
@@ -31,3 +33,5 @@ FUTURE WORK:
 -A better interface and live updated information would be a great use of Cesium. An example of this type of interface can be found here: http://science.nasa.gov/iSat/?group=SMD
 
 -Load in more interesting data provided by GINA, EPSCoR, and their partners. This could include historical climate data, geographic data, etc. 
+
+Demo created by GINA intern, Khan Howe. Thanks very much to the entire GINA office, especially to Dayne, Jay, and Vanessa for helping me through the proccess. 
