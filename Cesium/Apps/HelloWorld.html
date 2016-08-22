@@ -35,16 +35,20 @@ viewer.camera.flyTo({
    roll : 25.0
 });
 };
+function add_1955_imagery() {
+  var layers = viewer.scene.imageryLayers;
+  var old_lakes = layers.addImageryProvider(new Cesium.UrlTemplateImageryProvider({
+   url : 'http://tiles.gina.alaska.edu/tiles/epscor_ntc_epscor_northern_historical_usgs_1955/tile/{x}/{y}/{z}'
+ }));
+ viewer.camera.flyTo({
+        destination : Cesium.Cartesian3.fromDegrees(29.0, 109.77, 75000.0),
+        heading : 90.0,
+    pitch : 175.0,
+    roll : 25.0
+ });
+};
 </script>
 <script>
-function fly_to_gi() {
-  viewer.camera.flyTo({
-         destination : Cesium.Cartesian3.fromDegrees(212.1505, 64.8595, 150.0),
-         heading : 90.0,
-     pitch : 175.0,
-     roll : 25.0
-  });
-};
   function fly_to_alaska() {
     viewer.camera.flyTo({
            destination : Cesium.Cartesian3.fromDegrees(29.0, 116.0, 3000000.0),
@@ -160,6 +164,7 @@ function fly_to_gi() {
 
   <div id="cesiumContainer" ;></div>
   <button onclick = "fly_to_lakes();">Lakes</button>
+    <button onclick = "add_1955_imagery();">1955</button>
   <button onclick = "fly_to_gi();">Geophysical Institute</button>
   <button onclick = "fly_to_alaska();">Alaska</button>
   <button onclick = "fly_to_fairbanks();">Fairbanks</button>
@@ -170,7 +175,8 @@ function fly_to_gi() {
 
   var viewer = new Cesium.Viewer('cesiumContainer', {
     imageryProvider : new Cesium.UrlTemplateImageryProvider({
-       url : 'http://hippy.gina.alaska.edu/tiles/bdl/tile/{x}/{y}/{z}'
+       url : 'http://tiles.gina.alaska.edu/tiles/bdl/tile/{x}/{y}/{z}'
+       //url : 'http://tiles.proto.gina.alaska.edu/tilesrv/bdl_aa/tile/{x}/{y}/{z}'
   }),
       baseLayerPicker : false,
          crossDomain: true,
@@ -195,6 +201,7 @@ function fly_to_gi() {
 
 //var lakes = viewer.dataSources.add(Cesium.GeoJsonDataSource.load('https://alaska113.github.io/mars.txt'));
 //var mars = new Cesium.Ellipsoid.MOON
+
 
   </script>
 
