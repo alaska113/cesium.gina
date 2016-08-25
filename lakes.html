@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Use correct character set. -->
+  <meta charset="utf-8">
+  <!-- Tell IE to use the latest, best version. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>Hello World!</title>
+  <script src="../Build/Cesium/Cesium.js"></script>
+  <style>
+      @import url(../Build/Cesium/Widgets/widgets.css);
+      html, body, #cesiumContainer {
+          width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+      }
+  </style>
+</head>
+<body>
+
+  <form action="https://alaska113.github.io/cesium.gina/Cesium/Apps/Planets.html">
+    <input type="submit" value="Unrealistic Planets">
+</form>
+<form action="https://alaska113.github.io/cesium.gina/Cesium/Apps/alaska.html">
+  <input type="submit" value="Alaska">
+</form>  <form action="https://alaska113.github.io/cesium.gina/Cesium/Apps/fairbanks.html">
+    <input type="submit" value="Fairbanks">
+</form>  <form action="https://alaska113.github.io/cesium.gina/Cesium/Apps/gi.html">
+    <input type="submit" value="Geophysical Institute">
+</form>  <form action="https://alaska113.github.io/cesium.gina/Cesium/Apps/lakes.html">
+    <input type="submit" value="Lakes">
+</form>
+  <div id="cesiumContainer"></div>
+
+
+  <script>
+
+  var viewer = new Cesium.Viewer('cesiumContainer', {
+    imageryProvider : new Cesium.UrlTemplateImageryProvider({
+       url : 'http://hippy.gina.alaska.edu/tiles/bdl/tile/{x}/{y}/{z}'
+  }),
+      baseLayerPicker : false,
+         crossDomain: true,
+     vrButton : true,
+  });
+
+//   var dataSource1 = new Cesium.GeoJsonDataSource();
+// dataSource1.load('https://alaska113.github.io/lakes.txt');
+//
+// Sandcastle.addToolbarButton('Add DataSource 1', function() {
+//    viewer.dataSources.add(dataSource1);
+// });
+
+
+ // var promise1 = Cesium.GeoJsonDataSource.load('https://alaska113.github.io/lakes.txt');
+ // Cesium.when(promise1, function(dataSource1){
+ //    viewer.addToolbarButton('Add Lakes', function() {
+ //        viewer.dataSources.add(dataSource1);
+ //    })
+ //  });
+
+var lakes = viewer.dataSources.add(Cesium.GeoJsonDataSource.load('https://alaska113.github.io/lakes.txt'));
+viewer.camera.flyTo({
+       destination : Cesium.Cartesian3.fromDegrees(29.0, 109.77, 75000.0),
+});
+
+
+  </script>
+
+<!-- <script>
+  var viewer = new Cesium.Viewer('cesiumContainer', {
+     imageryProvider : new Cesium.UrlTemplateImageryProvider({
+    url : 'https://www.mapaplanet.org/explorer-bin/explorer.cgi?map=Moon&layers=moon_clementine_bw&west=-180&south=-90&east=180&north=90&center_lat=&center=0&defaultcenter=on&grid=none&stretch=auto&projection=SIMP&advoption=NO&info=NO&resolution=2&scale=15.16167&imageTopX=-4389305.0436973572&imageTopY=2721520.7438468933',
+    //credit : 'Map tiles by CartoDB, under CC BY 3.0. Data by OpenStreetMap, under ODbL.'
+}),
+baseLayerPicker : false,
+   crossDomain: true,
+vrButton : true
+});
+</script> -->
+</body>
+</html>
